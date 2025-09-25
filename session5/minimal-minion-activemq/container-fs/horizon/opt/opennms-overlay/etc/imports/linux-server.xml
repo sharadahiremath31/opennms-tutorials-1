@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model-import xmlns="http://xmlns.opennms.org/xsd/config/model-import" date-stamp="2024-02-12T10:50:02.025Z" foreign-source="linux-server" last-import="2024-02-12T10:51:29.354Z">
   <node location="Default" foreign-id="linux-01" node-label="linux-01">
-    <interface ip-addr="192.168.42.32" status="1" snmp-primary="P">
+    <interface ip-addr="172.20.0.101" status="1" snmp-primary="P">
       <monitored-service service-name="ICMP"/>
       <monitored-service service-name="SNMP"/>
     </interface>
@@ -10,7 +10,7 @@
   </node>
 
   <node location="Default" foreign-id="linux-02" node-label="linux-02">
-    <interface ip-addr="192.168.42.33" status="1" snmp-primary="P">
+    <interface ip-addr="172.20.0.102" status="1" snmp-primary="P">
       <monitored-service service-name="ICMP"/>
       <monitored-service service-name="SNMP"/>
     </interface>
@@ -18,8 +18,17 @@
     <asset name="latitude" value="48.8258763"/>
   </node>
 
-  <node location="Default" foreign-id="linux-03" node-label="linux-03">
-    <interface ip-addr="192.168.42.34" status="1" snmp-primary="P">
+  <node location="minion1-location" foreign-id="linux-03" node-label="linux-03">
+    <interface ip-addr="172.20.2.101" status="1" snmp-primary="P">
+      <monitored-service service-name="ICMP"/>
+      <monitored-service service-name="SNMP"/>
+    </interface>
+    <asset name="longitude" value="9.1685303"/>
+    <asset name="latitude" value="48.8258763"/>
+  </node>
+  
+  <node location="minion1-location" foreign-id="linux-04" node-label="linux-04">
+    <interface ip-addr="172.20.2.102" status="1" snmp-primary="P">
       <monitored-service service-name="ICMP"/>
       <monitored-service service-name="SNMP"/>
     </interface>

@@ -66,10 +66,12 @@ services:
       - ./container-fs/horizon/etc/conf.d/confd.toml:/etc/confd/confd.toml
     command: ["-s"]
     ports:
-      - "8101:8101/tcp"
-      - "8980:8980/tcp"
-      - "10162:1162/udp"
+      - "8101:8101/tcp"   # karaf ssh
+      - "8980:8980/tcp"   # web ui
+      - "10162:1162/udp"  # snmp trap
+      - "10514:10514/udp" # syslog
       - "61616:61616/tcp" # activemq
+      - "8990:8990" # grpc
       - "8001:8001" # JPDA debugging port
     healthcheck:
       test: [ "CMD", "curl", "-f", "-I", "http://localhost:8980/opennms/login.jsp" ]
@@ -85,6 +87,24 @@ services:
       N000:
         ipv4_address: 172.20.0.15
       
+  grafana:
+    image: grafana/grafana:10.3.1
+    container_name: grafana
+    hostname: grafana
+    environment:
+      TZ: ${TIMEZONE:-America/New_York}
+      GF_INSTALL_PLUGINS: opennms-opennms-app
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_AUTH_ANONYMOUS_ENABLED: true
+      GF_AUTH_BASIC_ENABLED: false
+    volumes:
+      - data-grafana:/var/lib/grafana
+      - ./grafana:/etc/grafana/provisioning/
+    ports:
+      - "3000:3000/tcp"
+    networks:
+      N000:
+        ipv4_address: 172.20.0.26
 
   minion1:
     image: ${DOCKER_REGISTRY:-docker.io}/${DOCKER_ORG:-opennms}/${MINION_OCI:-minion}:${ONMS_VERSION:-bleeding}
@@ -119,72 +139,53 @@ services:
       N001:
         ipv4_address: 172.20.2.25
 
-  grafana:
-    image: grafana/grafana:10.3.1
-    depends_on:
-      core:
-        condition: service_started
-    networks:
-      net-onms:
-        ipv4_address: 192.168.42.10
-    environment:
-      TZ: Europe/Berlin
-      GF_INSTALL_PLUGINS: opennms-opennms-app
-      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
-      GF_AUTH_ANONYMOUS_ENABLED: true
-      GF_AUTH_BASIC_ENABLED: false
-    volumes:
-      - data-grafana:/var/lib/grafana
-      - ./grafana:/etc/grafana/provisioning/
-    ports:
-      - "3000:3000/tcp"
-
-
+  # snmp containers in network N000
   linux-01:
     image: quay.io/labmonkeys/net-snmp:5.9.4-r0.b2384
     hostname: linux-01
     environment:
-      TZ: Europe/Berlin
-    networks:
-      net-onms:
-        ipv4_address: 192.168.42.32
+      TZ: ${TIMEZONE:-America/New_York}
     volumes:
-      - ./netsnmp/linux-01/sysinfo.conf:/etc/snmp/conf.d/sysinfo.conf
+      - ./container-fs/netsnmp/linux-01/sysinfo.conf:/etc/snmp/conf.d/sysinfo.conf
     ports:
       - "1610:161/udp"
+    networks:
+      N000:
+        ipv4_address: 172.20.0.101
 
   linux-02:
     image: quay.io/labmonkeys/net-snmp:5.9.4-r0.b2384
     hostname: linux-02
     environment:
-      TZ: Europe/Berlin
-    networks:
-      net-onms:
-        ipv4_address: 192.168.42.33
-    volumes:
-      - ./netsnmp/linux-02/sysinfo.conf:/etc/snmp/conf.d/sysinfo.conf
+      TZ: ${TIMEZONE:-America/New_York}
     ports:
       - "1611:161/udp"
+    networks:
+      N000:
+        ipv4_address: 172.20.0.102
 
+  # snmp containers in network N001
   linux-03:
     image: quay.io/labmonkeys/net-snmp:5.9.4-r0.b2384
     hostname: linux-03
     environment:
-      TZ: Europe/Berlin
+      TZ: ${TIMEZONE:-America/New_York}
+    volumes:
+      - ./container-fs/netsnmp/linux-03/sysinfo.conf:/etc/snmp/conf.d/sysinfo.conf
     networks:
-      net-onms:
-        ipv4_address: 192.168.42.34
+      N001:
+        ipv4_address: 172.20.2.101
     ports:
       - "1612:161/udp"
 
   linux-04:
     image: quay.io/labmonkeys/net-snmp:5.9.4-r0.b2384
-    hostname: linux-03
+    hostname: linux-04
     environment:
-      TZ: Europe/Berlin
-    networks:
-      net-onms:
-        ipv4_address: 192.168.42.34
+      TZ: ${TIMEZONE:-America/New_York}
     ports:
-      - "1612:161/udp"
+      - "1613:161/udp"
+    networks:
+      N001:
+        ipv4_address: 172.20.2.102
 

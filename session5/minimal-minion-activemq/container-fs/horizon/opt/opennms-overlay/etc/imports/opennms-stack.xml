@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model-import xmlns="http://xmlns.opennms.org/xsd/config/model-import" date-stamp="2024-02-12T10:50:02.025Z" foreign-source="opennms-stack" last-import="2024-02-12T10:51:29.354Z">
   <node location="Default" foreign-id="postgresql" node-label="postgresql">
-    <interface ip-addr="192.168.42.8" status="1" snmp-primary="N">
+    <interface ip-addr="172.20.0.10" status="1" snmp-primary="N">
       <monitored-service service-name="ICMP"/>
       <monitored-service service-name="Postgres"/>
     </interface>
@@ -10,7 +10,7 @@
   </node>
 
   <node location="Default" foreign-id="grafana" node-label="grafana">
-    <interface ip-addr="192.168.42.10" status="1" snmp-primary="N">
+    <interface ip-addr="172.20.0.26" status="1" snmp-primary="N">
       <monitored-service service-name="ICMP"/>
     </interface>
     <asset name="longitude" value="9.1685303"/>
