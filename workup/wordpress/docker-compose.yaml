@@ -1,0 +1,61 @@
+---
+
+
+# using fixed ip addresses so opennms provisoning config works
+# to see all network use docker network ls
+# to see config use docker network inspect minimal-minion-activemq_N000
+# note gateway is 172.20.0.1 
+networks:
+  N000:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+
+
+volumes:
+  db_data: {} # data for mariadb / wordpress
+
+services:
+
+  # word press example modified from 
+  # https://github.com/docker/awesome-compose/tree/master/wordpress-mysql
+  
+  # test wordpress database
+  db:
+    # We use a mariadb image which supports both amd64 & arm64 architecture
+    image: mariadb:10.6.4-focal
+    # If you really want to use MySQL, uncomment the following line
+    #image: mysql:8.0.27
+    command: '--default-authentication-plugin=mysql_native_password'
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=somewordpress
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wordpress
+      - MYSQL_PASSWORD=wordpress
+    expose:
+      - 3306
+      - 33060
+    networks:
+      N000:
+        ipv4_address: 172.20.0.70
+      
+  # test wordpress site
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - 8081:80
+    restart: always
+    environment:
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_PASSWORD=wordpress
+      - WORDPRESS_DB_NAME=wordpress
+    networks:
+      N000:
+        ipv4_address: 172.20.0.80
+
+
+
