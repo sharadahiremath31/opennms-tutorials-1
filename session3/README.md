@@ -25,9 +25,9 @@ Some events may raise an alarm and some events may cause an alarm to clear.
 Each alarm will maintain count and a list of events contributing to the alarm state. 
 
 
-In [Exercise-3-2](../session2/Exercise-3-2.md) we will cover some simple examples to inject traps into OpenNMS.
+In [Exercise-3-2](../session3/Exercise-3-2.md) we will cover some simple examples to inject traps into OpenNMS.
 
-In [Exercise-3-3](../session2/Exercise-3-3.md) we will cover some simple examples to help explain how OpennNMS traps and alarms are configured.
+In [Exercise-3-3](../session3/Exercise-3-3.md) we will cover some simple examples to help explain how OpennNMS traps and alarms are configured.
 
 ## More complex case study example
 
