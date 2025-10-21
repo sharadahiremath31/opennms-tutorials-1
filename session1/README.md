@@ -1,6 +1,6 @@
-# Session 1 Introduction to OpenNMS
-
 [Main Menu](../README.md) | [Session 1](../session1/README.md)
+
+# Session 1 Introduction to OpenNMS
 
 ## Contents
 

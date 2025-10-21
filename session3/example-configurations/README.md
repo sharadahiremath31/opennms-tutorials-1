@@ -1,3 +1,5 @@
+[Main Menu](../README.md) | [Session 3](../session3/README.md) | [example-configurations](../session3/example-configurations/README.md)
+
 # Example Configurations
 
 In this folder you will find example configuration files. 
