@@ -21,7 +21,7 @@ and the
 
 [PageSequenceMonitor](https://docs.opennms.com/horizon/30/reference/service-assurance/monitors/PageSequenceMonitor.html)
 
-The use of metadata is based on notes in discourse https://opennms.discourse.group/t/how-to-monitor-websites-using-metadata/1227
+The use of metadata is based on notes in discourse [https://opennms.discourse.group/t/how-to-monitor-websites-using-metadata/1227](https://opennms.discourse.group/t/how-to-monitor-websites-using-metadata/1227)
 but some corrections have been made.
 
 The examples are rendered in OpenNMS as separate monitored services attached to IP addresses on a single node. 
