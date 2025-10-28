@@ -129,9 +129,7 @@ bin/send-event.pl uei.opennms.org/internal/reloadDaemonConfig -p 'daemonName Eve
 Perl is not installed in opennms containers but curl can be used instead (substitute --user username:password as appropriate)
 
 ```
-curl -X POST http://localhost:8980/opennms/rest/events -H 'Content-Type: application/json' -d '{"uei": "uei.o
-pennms.org/internal/reloadDaemonConfig", "severity": "NORMAL", "parms": [{"parmName": "daemonName", "value": "Eventd" }]
-}' --user admin:admin
+curl -X POST http://localhost:8980/opennms/rest/events -H 'Content-Type: application/json' -d '{"uei": "uei.opennms.org/internal/reloadDaemonConfig", "severity": "NORMAL", "parms": [{"parmName": "daemonName", "value": "Eventd" }] }' --user admin:admin
 ```
 
 You will see a reloadDaemonConfigSuccessful event in the event list
@@ -274,7 +272,7 @@ A good source of information is the [alarm and event documentation](https://docs
 
 But also looking at the [share/xsds/eventconf.xsd](../../main/pristine-opennms-config-files/xsds/eventconf.xsd) can also reveal more options.
 
-We will look a real alarm definition exercise in much more detail in the next session.
+We will look a real alarm definition exercise in much more detail in the `More complex case study example` in [Session 3](../session3/README.md)
 
  
 
