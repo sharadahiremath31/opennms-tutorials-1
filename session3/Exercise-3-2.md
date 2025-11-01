@@ -1,5 +1,5 @@
 
-[Main Menu](../README.md) | [Session 3](../session3/README.md) | [Exercise-3-2](../session2/Exercise-3-2.md)
+[Main Menu](../README.md) | [Session 3](../session3/README.md) | [Exercise-3-2](../session3/Exercise-3-2.md)
 
 # Exercise 3-2 
 

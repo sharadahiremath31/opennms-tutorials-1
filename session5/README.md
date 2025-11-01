@@ -1,10 +1,18 @@
 # Session 5 - Performance
 
-[Main Menu](../workup/README.md) | [Session 5](../session5/README.md)
+[Main Menu](../README.md) | [Session 5](../session5/README.md)
 
 [performance-management-Introduction.pdf](../session5/performance-management-Introduction.pdf) Slides for this session.
 
-[Session 5 Video](https://youtu.be/f67ol8LD77s)
+[Session 5 Video](https://youtu.be/f67ol8LD77s) (DEPRICATED - to be replaced)
+
+[Exercise-5-1](../session5/Exercise-5-1.md)
+
+[Exercise-5-2](../session5/Exercise-5-2.md)
+
+[Exercise-5-3](../session5/Exercise-5-3.md)
+
+[AdditionalNotes1.md](../session5/AdditionalNotes1.md)
 
 ## Exercise 5.1
 
@@ -17,6 +25,7 @@ snmpwalk -On -v2c -c public localhost:1610 .1.3.6.1.4.1.2021.10.1.5
 .1.3.6.1.4.1.2021.10.1.5.2 = INTEGER: 335
 .1.3.6.1.4.1.2021.10.1.5.3 = INTEGER: 344
 ```
+These values are taken from the NetSNMP maintained [UCD-SNMP-MIB.txt](https://www.net-snmp.org/docs/mibs/UCD-SNMP-MIB.txt) 
 
 The vendor gives us a MIB description for these metrics as the following:
 
@@ -90,7 +99,7 @@ Grafana Web UI 3000/tcp ─────┼────│   172.20.0.26/24   ├
 
 ### Hints
 
-* Assign the role `ROLE_FILESYSTEM_EDITOR` to the `admin`, which allows you to edit configuration files through the web user interface.
+* Assign the role `ROLE_FILESYSTEM_EDITOR` to the `admin`, which allows you to edit configuration files through the web user interface. (See [Session 2 Modifying configuration files through UI](../session2/README.md2#modifying-configuration-files-through-the-ui)
 * If you want to start from scratch, run `docker compose down -v`, it will delete the database and the configuration files.
   You can start again with `docker compose up -d` afterwards.
 * Ad-hoc data collection for a node: `opennms:collect -l Default -n 4 org.opennms.netmgt.collectd.SnmpCollector 192.168.42.34`
