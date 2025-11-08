@@ -48,10 +48,12 @@ You can access the following exposed services through the host system's localhos
 |URL/Command                           | Description                           |
 |:-------------------------------------|:--------------------------------------|
 |[http://localhost:8980](http://localhost:8980) | The OpenNMS Horizon web user interface (username:admin password:admin)|
-|`ssh&nbsp;admin@localhost&nbsp;-p&nbsp;8101` | The Horizon Karaf CLI via SSH<BR>If yo dont have an SSH client, you can access this using `docker compose exec horizon bash ssh&nbsp;admin@localhost&nbsp;-p&nbsp;8101` |
-|`ssh&nbsp;admin@localhost&nbsp;-p&nbsp;8201` | The Minion1 Karaf CLI via SSH |
+|ssh&nbsp;admin@localhost&nbsp;-p&nbsp;8101 | The Horizon Karaf CLI via SSH<BR>If you dont have an SSH client, you can access this using `docker compose exec horizon ssh admin@localhost -p 8101` |
+|ssh&nbsp;admin@localhost&nbsp;-p&nbsp;8201 | The Minion1 Karaf CLI via SSH<BR>`docker compose exec minion1 ssh admin@localhost -p 8201` |
 |[http://localhost:3000](http://localhost:3000) |The Grafana web user interface|
 |linux-01&nbsp;localhost:1610&nbsp;udp<BR>linux-02&nbsp;localhost:1611&nbsp;udp<BR>linux-02&nbsp;localhost:1612&nbsp;udp<BR>linux-04&nbsp;localhost:1613&nbsp;udp | Use these ports if you want to access the SNMP agents from your host system.<br>Inside the Docker `minimal-minion-activemq`, they are listening to the default port 161/udp.|
+
+The docker compose project hosts the following containers:
 
 ```plain
                               Docker Compose Project
@@ -60,7 +62,7 @@ External ports (on localhost)│ Internal addresses                             
                              │    ┌────────────────────┐              ┌────────────────────┐    │
                              │    │                    │              │                    │    │
                              │    │     database       │ N000         │      linux-01      │    │
-                             │    │   172.20.0.10/24   ├──────┬───────│   172.20.0.101/24  ├────┼────── Net-SNMP 1610/udp
+                             │    │   172.20.0.10/24   ├──────┬───────│   172.20.0.101/24  ├────┼────── sysoId 61509 1610/udp
                              │    │                    │      │       │                    │    │
                              │    │                    │      │       │                    │    │
                              │    └────────────────────┘      │       └────────────────────┘    │
@@ -68,7 +70,7 @@ External ports (on localhost)│ Internal addresses                             
                              │    ┌────────────────────┐      │       ┌────────────────────┐    │
                              │    │                    │      │       │                    │    │
        Web UI  8980/tcp ─────┼────┤      Horizon       │      │       │     linux-02       │    │
-                             │    │   172.20.0.15/24   ├──────┼───────│   172.20.0.102/24  ├────┼────── Net-SNMP 1611/udp
+                             │    │   172.20.0.15/24   ├──────┼───────│   172.20.0.102/24  ├────┼────── sysoId 61509 1611/udp
   Karaf Shell  8101/tcp ─────┼────┤                    │      │       │                    │    │
                              │    │                    │      │       │                    │    │
                              │    └────────────────────┘      │       └────────────────────┘    │
@@ -76,7 +78,7 @@ External ports (on localhost)│ Internal addresses                             
                              │    ┌────────────────────┐      │       ┌────────────────────┐    │
                              │    │                    │      │       │                    │    │
                              │    │      Grafana       │      │       │     linux-03       │    │
-Grafana Web UI 3000/tcp ─────┼────│   172.20.0.26/24   ├──────┼───────│   172.20.0.103/24  ├────┼────── Net-SNMP 1612/udp
+Grafana Web UI 3000/tcp ─────┼────│   172.20.0.26/24   ├──────┼───────│   172.20.0.103/24  ├────┼────── sysoId 8072 (Net-SNMP) 1612/udp
                              │    │                    │      │       │                    │    │
                              │    │                    │      │       │                    │    │
                              │    └────────────────────┘      │       └────────────────────┘    │
@@ -84,7 +86,7 @@ Grafana Web UI 3000/tcp ─────┼────│   172.20.0.26/24   ├
                              │    ┌────────────────────┐      │       ┌────────────────────┐    │
                              │    │       Minion1      │      │       │                    │    │
                              │    │   172.20.0.25/24   ├──────┘       │     linux-04       │    │
-  Karaf Shell  8101/tcp ─────┼────┤                    │              │                    ├────┼────── Net-SNMP 1613/udp
+  Karaf Shell  8201/tcp ─────┼────┤                    │              │                    ├────┼────── sysoId 8072 (Net-SNMP) 1613/udp
                              │    │                    │ N001         │                    │    │
                              │    │   172.20.2.25/24   ├──────────────┤   172.20.2.101/24  │    │
                              │    └────────────────────┘              └────────────────────┘    │
@@ -97,16 +99,22 @@ Grafana Web UI 3000/tcp ─────┼────│   172.20.0.26/24   ├
 * Assign the role `ROLE_FILESYSTEM_EDITOR` to the `admin`, which allows you to edit configuration files through the web user interface. (See [Session 2 Modifying configuration files through UI](../session2/README.md#modifying-configuration-files-through-the-ui)
 * If you want to start from scratch, run `docker compose down -v`, it will delete the database and the configuration files.
   You can start again with `docker compose up -d` afterwards.
-* Ad-hoc data collection for a node from karaf consol : `opennms:collect -l Default -n 4 org.opennms.netmgt.collectd.SnmpCollector 192.168.42.34`
+* Ad-hoc data collection for a node from karaf consol : `opennms:collect -l Default -n linux-server:linux-03 org.opennms.netmgt.collectd.SnmpCollector linux-03`
 
-### Task 1: Provision the three servers, linux-01, linux-02 and linux-03
+### Task 1: Provision the four servers, linux-01, linux-02, linux-03 and linux-04
 
-All three Linux servers have SNMP with v2c configured.
+The provisioning requistion `linux-server` has the configurations for these devices.
+You can load this from the `admin>Manage Provisioning Requisitions` page.
+
+All the Linux servers have SNMP with v2c configured.
 The read only community is set to `public`.
-- [ ] Verify if you can get access to the SNMP agents using the `snmpwalk` command.
-- [ ] Verify if OpenNMS can access the SNMP agents using `ssh admin@localhost -p 8101 snmp-walk -l Default 192.168.42.34 .1.3.6.1.4.1.2021.10.1.5` 
 
-Question 1: How do the 3 systems differentiate from each other regarding the SNMP information discovered?
+- [ ] Verify if you can get access to the SNMP agents sysoid using the Net-snmp `snmpwalk` command from inside one of the linux containers
+  * `docker compose exec linux-03 snmpwalk -On -v2c -c public linux-02:161 .1.3.6.1.2.1.1.2`
+- [ ] Verify if OpenNMS can access the SNMP agents using the karaf terminal snmp-walk command
+  * `ssh admin@localhost -o UserKnownHostsFile=/dev/null -p 8101 snmp-walk -l Default linux-03 .1.3.6.1.4.1.2021.10.1.5` 
+
+Question 1: How do the systems differentiate from each other regarding the SNMP information discovered?
 
 Question 2: Investigate which metrics are collected from the servers, if not what do you think could be an issue?
 
