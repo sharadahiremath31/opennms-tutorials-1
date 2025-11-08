@@ -14,6 +14,8 @@ snmpwalk -On -v2c -c public localhost:1610 .1.3.6.1.4.1.2021.10.1.5
 ```
 These values are taken from the NetSNMP maintained [UCD-SNMP-MIB.txt](https://www.net-snmp.org/docs/mibs/UCD-SNMP-MIB.txt) 
 
+You can load this mib into the [ireasoning mibbrowser](https://www.ireasoning.com/mibbrowser.shtml) or view it online at the [online mib browser UCD-SNMP-MIB](https://mibbrowser.online/mibdb_search.php?mib=UCD-SNMP-MIB)
+
 The vendor gives us a MIB description for these metrics as the following:
 
 > The 1,5 and 15 minute load averages as an integer. This is computed by taking the floating point loadaverage value and multiplying by 100, then converting the value to an integer.
@@ -42,8 +44,6 @@ You can access the following exposed services through the host system's localhos
 |ssh&nbsp;admin@localhost&nbsp;-p&nbsp;8201 | The Minion1 Karaf CLI via SSH |
 |http://localhost:3000                 |The Grafana web user interface|
 |linux-01&nbsp;localhost:1610&nbsp;udp<BR>linux-02&nbsp;localhost:1611&nbsp;udp<BR>linux-02&nbsp;localhost:1612&nbsp;udp<BR>linux-04&nbsp;localhost:1613&nbsp;udp | Use these ports if you want to access the SNMP agents from your host system.<br>Inside the Docker minimal-minion-activemq, they are listening to the default port 161/udp.|
-
-
 
 ```plain
                               Docker Compose Project
@@ -93,7 +93,7 @@ Grafana Web UI 3000/tcp ─────┼────│   172.20.0.26/24   ├
 
 ### Task 1: Provision the three servers, linux-01, linux-02 and linux-03
 
-All three Linux server have SNMP with v2c configured.
+All three Linux servers have SNMP with v2c configured.
 The read only community is set to `public`.
 - [ ] Verify if you can get access to the SNMP agents using the `snmpwalk` command.
 - [ ] Verify if OpenNMS can access the SNMP agents using `ssh admin@localhost -p 8101 snmp-walk -l Default 192.168.42.34 .1.3.6.1.4.1.2021.10.1.5` 
