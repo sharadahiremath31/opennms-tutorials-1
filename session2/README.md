@@ -165,7 +165,7 @@ OpenNMS can also make HTTP queries to known urls to detect if a service is up. T
 
 The Business Service Monitoring feature of OpenNMS can combine discrete service monitoring actions to build up a service graph which indicates the business impact of a service failure.
 
-To understand this further, have a try at the [Wordpress Service Monitoring Exercise](../session2/Exercise-2-service-monitoring1.md)
+To understand this further, have a try at the [Wordpress Service Monitoring Exercise-2-2](../session2/Exercise-2-2-service-monitoring1.md)
 
 ## Summary
 
