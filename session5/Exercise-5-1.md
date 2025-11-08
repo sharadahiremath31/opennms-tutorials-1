@@ -1,7 +1,7 @@
 
 [Main Menu](../README.md) | [Session 5](../session5/README.md) | [Exercise-5-1](../session5/Exercise-5-1.md)
 
-# Exercise 5-1 
+# Exercise 5-1 Accessing the sample network
 
 We have an SNMP enabled device which provides the system load as a metric to indicate the system CPU and I/O utilization.
 The metric is provided under the following SNMP object ids:

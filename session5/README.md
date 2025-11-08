@@ -35,7 +35,7 @@ The key files configuring SNMP data collection are in the following list.
 | [etc/datacollection-config.xml](../../main/pristine-opennms-config-files/etc-pristine/datacollection-config.xml)| This file provides the configuration for SNMP data collection. It references files in the [etc/datacollection  folder](../../main/pristine-opennms-config-files/etc-pristine/datacollection/). For instance see the file [etc/datacollection/netsnmp.xml](../../main/pristine-opennms-config-files/etc-pristine/datacollection/netsnmp.xml) |
 | [etc/xml-datacollection-config.xml](../../main/pristine-opennms-config-files/etc-pristine/xml-datacollection-config.xml)| This file is provided for information. It is not SNMP related. It provides the configuration for XML and Json data collection. It references files in the [etc/xml-datacollection  folder](../../main/pristine-opennms-config-files/etc-pristine/xml-datacollection).<BR>A similar pattern exists for other data collection protocols such as JMX |
 
-The relationship between SNMP data collection configuration files is illustrated below:
+The relationship between the SNMP data collection configuration files is illustrated below:
 
 ![alt text](../session5/images/collectd-config.png "Figure collectd-config.png")
 
