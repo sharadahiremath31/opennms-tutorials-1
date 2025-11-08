@@ -108,8 +108,11 @@ You can load this from the `admin>Manage Provisioning Requisitions` page.
 
 All the Linux servers have SNMP with v2c configured.
 The read only community is set to `public`.
-- [ ] Verify if you can get access to the SNMP agents using the `snmpwalk` command.
-- [ ] Verify if OpenNMS can access the SNMP agents using `ssh admin@localhost -o UserKnownHostsFile=/dev/null -p 8101 snmp-walk -l Default linux-03 .1.3.6.1.4.1.2021.10.1.5` 
+
+- [ ] Verify if you can get access to the SNMP agents sysoid using the Net-snmp `snmpwalk` command from inside one of the linux containers
+  * `docker compose exec linux-03 snmpwalk -On -v2c -c public linux-02:161 .1.3.6.1.2.1.1.2`
+- [ ] Verify if OpenNMS can access the SNMP agents using the karaf terminal snmp-walk command
+  * `ssh admin@localhost -o UserKnownHostsFile=/dev/null -p 8101 snmp-walk -l Default linux-03 .1.3.6.1.4.1.2021.10.1.5` 
 
 Question 1: How do the systems differentiate from each other regarding the SNMP information discovered?
 
