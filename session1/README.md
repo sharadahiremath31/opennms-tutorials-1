@@ -18,6 +18,8 @@
 
 [OpenNMS Overview Presentation](https://youtu.be/0BVz5_ozEog) - Overview of the key features, use-cases and deployment options for OpenNMS
 
+[Session 1 - Introduction](https://youtu.be/BYwJKKv_PcM) - Video supporting this session including tutorial examples.
+
 ## What is OpenNMS
 
 ### Overview
