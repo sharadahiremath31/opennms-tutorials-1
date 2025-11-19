@@ -2,6 +2,22 @@
 
 # Exercise Service Monitoring
 
+# Introduction
+OpenNMS has separate service polling and data collection frameworks. 
+
+If data colection is defined for a service, OpenNMS will attempt to collect data (e.g. SNMP data such as bits in/out) for a node or interface.
+We will cover data collection in a later session.
+
+Service polling does not do data collection but does perform simple synthetic transactions against all the defined services on each interface at regular intervals (Usually every 5 minutes). 
+Polling determines whether the service is up or down and measures the response time for each service.
+
+The services which can be polled are defined in the file [/etc/poller-configuration.xml](../pristine-opennms-config-files/etc-pristine//poller-configuration.xml)
+
+/poller-configuration.xml
+
+
+
+
 ## service 3 tier network
 
 Often sites are made scalable and more resilient through load-balancing a number of servers. 
