@@ -13,10 +13,71 @@ Polling determines whether the service is up or down and measures the response t
 
 The services which can be polled are defined in the file [/etc/poller-configuration.xml](../pristine-opennms-config-files/etc-pristine//poller-configuration.xml)
 
-/poller-configuration.xml
+in `poller-configuration.xml` you will see various packages defined.
+A package defines a group of services for regular polling. 
+It determines how often the services within a package will be polled and how this data will be aggregated in `rrd files` if they are being used.
 
+A filter definition within a package can also determine which nodes are eligable to be included in the package depending on their IP address range and criteria such as their `category`.
 
+Each package may also have a set of `downtime` definitions. 
+The OpenNMS downtime model determines wht OpenNMS will do if a service fails to repond to a poll. 
+Typically, OpenNMS will speed up the polling rate for a period to more accurately detect when the service comes up so that SLA's are measured more accurately. 
+However, after this period, OpenNMS will slow the polling right down so that missing services dont impact the polling of other services and it is also possible to  configure OpenNMS to delete a servcie if it dissapears for a long time.
 
+At the bottom of the file, you will see that each service definition also has an assocaited monitor which defines the java class OpenNMS uses to poll a particular service definition
+
+In the pristine [/etc/poller-configuration.xml](../pristine-opennms-config-files/etc-pristine//poller-configuration.xml) you will see an `example1` package definition which is the 'out of the box' definition for polling most services.
+
+Specifically we will look at the 'HTTPS' service definition in the `example1` package.
+
+```
+   <package name="example1">
+      <filter>IPADDR != '0.0.0.0'</filter>
+      <include-range begin="1.1.1.1" end="254.254.254.254" />
+      <include-range begin="::1" end="ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff" />
+      <rrd step="300">
+         <rra>RRA:AVERAGE:0.5:1:2016</rra>
+         <rra>RRA:AVERAGE:0.5:12:1488</rra>
+         <rra>RRA:AVERAGE:0.5:288:366</rra>
+         <rra>RRA:MAX:0.5:288:366</rra>
+         <rra>RRA:MIN:0.5:288:366</rra>
+      </rrd>
+---
+      <service name="HTTPS" interval="300000" user-defined="false" status="on">
+         <parameter key="retry" value="${requisition:poller-retry|requisition:retry|detector:retry|1}" />
+         <parameter key="timeout" value="${requisition:poller-timeout|requisition:timeout|detector:timeout|5000}" />
+         <parameter key="port" value="${requisition:port|detector:port|443}" />
+         <parameter key="url" value="${requisition:url|detector:url|/}" />
+         <parameter key="rrd-repository" value="/opt/opennms/share/rrd/response" />
+         <parameter key="rrd-base-name" value="https" />
+         <parameter key="ds-name" value="https" />
+      </service>
+---
+      <downtime begin="0" end="300000" interval="30000" /><!-- 30s, 0, 5m -->
+      <downtime begin="300000" end="43200000" interval="300000" /><!-- 5m, 5m, 12h -->
+      <downtime begin="43200000" end="432000000" interval="600000" /><!-- 10m, 12h, 5d -->
+      <downtime begin="432000000" interval="3600000" /><!-- 1h, 5d -->
+   </package>
+
+---
+
+   <monitor service="HTTPS" class-name="org.opennms.netmgt.poller.monitors.HttpsMonitor" />
+
+```
+
+You will note that the HTTPS service is monitored using the HttpsMonitor which requires a number of paramaters to be defined. 
+These paramaters can be altered on a per node basis using paramater subsctitution from matadata defined for the node.
+
+For instance, the HTTPS port will default to 443 but can be changed by a metadata name/value pair from the requisition metadata.
+
+```
+<parameter key="port" value="${requisition:port|detector:port|443}" />
+```
+
+In our example, we will change the url which is polled by adding the `/wordpress/` page to the HTTPS service definition.
+```
+         <parameter key="url" value="${requisition:url|detector:url|/}" />
+```
 
 ## service 3 tier network
 
