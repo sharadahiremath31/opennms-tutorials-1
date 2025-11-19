@@ -75,9 +75,12 @@ For instance, the HTTPS port will default to 443 but can be changed by a metadat
 ```
 
 In our example, we will change the url which is polled by adding the `/wordpress/` page to the HTTPS service definition.
+
 ```
          <parameter key="url" value="${requisition:url|detector:url|/}" />
 ```
+
+![alt text](../session2/images/load-balancer-requisition-definition.png "Figure load-balancer-requisition-definition.png")
 
 ## service 3 tier network
 
